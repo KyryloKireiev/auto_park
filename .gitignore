@@ -16,7 +16,9 @@ vendor/*
 # Local specifics
 .idea/
 venv/
-/__pycache__/*
+auto_park/auto_park/__pycache__/*
+auto_park/park/__pycache__/*
+
 /bin/*
 
 config.json
