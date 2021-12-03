@@ -1,15 +1,22 @@
 from django.db import models
+from datetime import datetime
+
 
 # Create your models here.
+
 
 class Driver(models.Model):
 
     driver_last_name = models.CharField('Фамилия водителя:', max_length=50)
     driver_first_name = models.CharField('Имя водителя:', max_length=50)
-    drive_date = models.DateTimeField('Время приезда в автопарк:')
+    drive_date = models.DateField()
+#    drive_date = models.DateTimeField('Время приезда в автопарк:')
 
     def __str__(self):
         return self.driver_last_name + ' ' + self.driver_first_name
+
+    def required_format(self):
+        return self.drive_date.datetime.datetime.strptime("%d/%m/%Y %H:%M:%S")
 
     class Meta:
         verbose_name = 'Водитель'

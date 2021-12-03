@@ -1,0 +1,22 @@
+# Binaries
+*.exe
+*.dll
+*.so
+*.dylib
+*.zip
+
+# Output of the go coverage tool and logs
+*.out
+*.xml
+*.log
+
+# Automatically generated
+vendor/*
+
+# Local specifics
+.idea/
+venv/
+/__pycache__/*
+/bin/*
+
+config.json
