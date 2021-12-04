@@ -1,6 +1,8 @@
 from rest_framework import serializers
 from .models import Driver, Vehicle
 
+# удалить 2 сериалайзера!!!
+
 #Создаем сериалайзер, который возвращает список фамилий водителей
 # и позволяет создать нового водителя GET and POST
 class DriverSerializer(serializers.ModelSerializer):
@@ -13,12 +15,6 @@ class DriverSerializer(serializers.ModelSerializer):
 # редактировать и удалять водителя GET, UPDATE, DELETE
 class DriverDetailCRUDSerializer(serializers.ModelSerializer):
 
-#    id = serializers.IntegerField(read_only=True)
-#    first_name = serializers.CharField(max_length=50)
-#    last_name = serializers.CharField(max_length=50)
-#    created_at = serializers.DateTimeField(read_only=True)
-#    updated_at = serializers.DateTimeField(read_only=True)
-
     class Meta:
         model = Driver
         fields = '__all__'
@@ -27,13 +23,6 @@ class DriverDetailCRUDSerializer(serializers.ModelSerializer):
 # и позволяет создать нового водителя GET and POST
 
 class VehicleSerializers(serializers.ModelSerializer):
-
-#    id = serializers.IntegerField(read_only=True)
-#    make = serializers.CharField(max_length=50)
-#    model = serializers.CharField(max_length=50)
-#    plate_number = serializers.CharField(max_length=50)
-#    created_at = serializers.DateTimeField(read_only=True)
-#    updated_at = serializers.DateTimeField(read_only=True)
 
     class Meta:
         model = Vehicle
