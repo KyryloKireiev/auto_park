@@ -1,32 +1,51 @@
 from rest_framework import serializers
-from .models import Driver
+from .models import Driver, Vehicle
 
 #Создаем сериалайзер, который возвращает список фамилий водителей
 # и позволяет создать нового водителя GET and POST
 class DriverSerializer(serializers.ModelSerializer):
 
-    driver_first_name = serializers.CharField(write_only=True, max_length=50)
-    driver_last_name = serializers.CharField(max_length=50)
-
     class Meta:
         model = Driver
-        fields = [
-            'driver_first_name', 'driver_last_name'
-        ]
+        fields = '__all__'
 
 #Создаем сериалайзер, который возвращает детальную инфу о водителе и позволяет
 # редактировать и удалять водителя GET, UPDATE, DELETE
-class DriverDetailSerializer(serializers.ModelSerializer):
+class DriverDetailCRUDSerializer(serializers.ModelSerializer):
 
-    id = serializers.IntegerField(read_only=True)
-    driver_first_name = serializers.CharField(max_length=50)
-    driver_last_name = serializers.CharField(max_length=50)
-    created_at = serializers.DateTimeField(read_only=True, format="%d/%m/%Y %H:%M:%S")
-    updated_at = serializers.DateTimeField(read_only=True, format="%d/%m/%Y %H:%M:%S")
+#    id = serializers.IntegerField(read_only=True)
+#    first_name = serializers.CharField(max_length=50)
+#    last_name = serializers.CharField(max_length=50)
+#    created_at = serializers.DateTimeField(read_only=True)
+#    updated_at = serializers.DateTimeField(read_only=True)
 
     class Meta:
         model = Driver
         fields = '__all__'
 
+#Создаем сериалайзер, который возвращает список автомобилей
+# и позволяет создать нового водителя GET and POST
+
+class VehicleSerializers(serializers.ModelSerializer):
+
+#    id = serializers.IntegerField(read_only=True)
+#    make = serializers.CharField(max_length=50)
+#    model = serializers.CharField(max_length=50)
+#    plate_number = serializers.CharField(max_length=50)
+#    created_at = serializers.DateTimeField(read_only=True)
+#    updated_at = serializers.DateTimeField(read_only=True)
+
+    class Meta:
+        model = Vehicle
+        fields = '__all__'
+
+#Создаем сериалайзер, который возвращает детальную инфу об автомобиле и позволяет
+# редактировать и удалять автомобиль GET, UPDATE, DELETE
+
+class VehicleDetailCRUDSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Vehicle
+        fields = '__all__'
 
 
