@@ -1,30 +1,73 @@
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.filters import SearchFilter
+import logging
 
 from .models import Driver, Vehicle
-from .serializers import DriverSerializer, DriverDetailCRUDSerializer, VehicleSerializers, VehicleDetailCRUDSerializer
+from .serializers import DriverSerializer, VehicleSerializers
 
-#Класс: просмотр списка водителей и создание нового водителя
+from datetime import datetime, timezone
+from .forms import DriverFilterForm
+from rest_framework.request import Request
+from rest_framework.response import Response
+from typing import Any
+from django.db.models import QuerySet
+from django.conf import settings
+
+
 class DriverListAPIView(ListCreateAPIView):
     serializer_class = DriverSerializer
     queryset = Driver.objects.all()
-    filter_backends = [SearchFilter]
-    search_fields = ['created_at']
 
-#Класс: просмотр информации по водителю, редактирование и удаление водителя по ID
+    def get(self, request: Request, *args: Any, **kwargs: Any) -> Response:
+        form = DriverFilterForm(request.GET)
+        if not form.is_valid():
+            return Response(data=form.errors, status=400)
+        return super().get(request, *args, **kwargs)
+
+    def get_queryset(self) -> QuerySet:
+        queryset = Driver.objects
+        filter_fields = ["created_at__lte", "created_at__gte"]
+        filter_kwargs = {}
+
+        for field in filter_fields:
+            if field in self.request.GET:
+                datetime_ = datetime.strptime(self.request.GET[field], settings.DATE_INPUT_FORMAT)
+                datetime_ = datetime_.replace(tzinfo=timezone.utc)
+                filter_kwargs[field] = datetime_
+
+        logging.warning(filter_kwargs)
+
+        if filter_kwargs:
+            queryset = queryset.filter(**filter_kwargs)
+
+        return queryset
+
+
 class DriverDetailCRUDAPIView(RetrieveUpdateDestroyAPIView):
-    serializer_class = DriverDetailCRUDSerializer
+    serializer_class = DriverSerializer
     queryset = Driver.objects.all()
     lookup_field = 'id'
 
-#Класс: просмотр списка автомобилей и создание нового автомобиля
+
 class VehicleListAPIView(ListCreateAPIView):
     serializer_class = VehicleSerializers
     queryset = Vehicle.objects.all()
 
-#Класс: просмотр информации по автомобилю, редактирование и удаление автомобиля по ID
+    def get_queryset(self):
+        queryset = Vehicle.objects
+        with_drivers = self.request.query_params.get('with_drivers')
+
+        if with_drivers == 'yes':
+            queryset = queryset.filter()
+        if with_drivers == 'no':
+            queryset = queryset.filter()
+
+        return queryset
+
 
 class VehicleDetailCRUDAPIView(RetrieveUpdateDestroyAPIView):
-    serializer_class = VehicleDetailCRUDSerializer
+    serializer_class = VehicleSerializers
     queryset = Vehicle.objects.all()
     lookup_field = 'id'
+
+

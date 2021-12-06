@@ -20,7 +20,7 @@ class Driver(models.Model):
 class Vehicle(models.Model):
 
     id = models.BigAutoField(primary_key=True)
-    driver = models.ForeignKey(Driver, on_delete=models.CASCADE)
+    driver = models.ForeignKey(Driver, on_delete=models.SET_NULL, blank=True, null=True)
     make = models.CharField('Модель автомобиля:', max_length=50)
     model = models.CharField('Марка автомобиля:', max_length=50)
     plate_number = models.CharField('Номер автомобиля:', max_length=50)
