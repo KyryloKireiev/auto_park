@@ -1,4 +1,5 @@
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
+from rest_framework.filters import SearchFilter
 
 from .models import Driver, Vehicle
 from .serializers import DriverSerializer, DriverDetailCRUDSerializer, VehicleSerializers, VehicleDetailCRUDSerializer
@@ -7,6 +8,8 @@ from .serializers import DriverSerializer, DriverDetailCRUDSerializer, VehicleSe
 class DriverListAPIView(ListCreateAPIView):
     serializer_class = DriverSerializer
     queryset = Driver.objects.all()
+    filter_backends = [SearchFilter]
+    search_fields = ['created_at']
 
 #Класс: просмотр информации по водителю, редактирование и удаление водителя по ID
 class DriverDetailCRUDAPIView(RetrieveUpdateDestroyAPIView):
