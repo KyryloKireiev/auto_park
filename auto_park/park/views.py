@@ -1,9 +1,9 @@
-from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
+from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView, CreateAPIView
 from rest_framework.filters import SearchFilter
 import logging
 
 from .models import Driver, Vehicle
-from .serializers import DriverSerializer, VehicleSerializers
+from .serializers import DriverSerializer, VehicleSerializers, VehicleSetDriverSerializers
 
 from datetime import datetime, timezone
 from .forms import DriverFilterForm
@@ -12,7 +12,6 @@ from rest_framework.response import Response
 from typing import Any
 from django.db.models import QuerySet
 from django.conf import settings
-
 
 class DriverListAPIView(ListCreateAPIView):
     serializer_class = DriverSerializer
@@ -53,15 +52,15 @@ class VehicleListAPIView(ListCreateAPIView):
     serializer_class = VehicleSerializers
     queryset = Vehicle.objects.all()
 
+
     def get_queryset(self):
-        queryset = Vehicle.objects
+        queryset = Vehicle.objects.all()
         with_drivers = self.request.query_params.get('with_drivers')
 
         if with_drivers == 'yes':
-            queryset = queryset.filter()
+            queryset = queryset.filter(driver__isnull=False)
         if with_drivers == 'no':
-            queryset = queryset.filter()
-
+            queryset = queryset.filter(driver__isnull=True)
         return queryset
 
 
@@ -71,3 +70,7 @@ class VehicleDetailCRUDAPIView(RetrieveUpdateDestroyAPIView):
     lookup_field = 'id'
 
 
+class VehicleCreateDestroyDriverAPIView(CreateAPIView):
+    serializer_class = VehicleSetDriverSerializers
+    queryset = Vehicle.objects.all()
+    lookup_field = 'id'

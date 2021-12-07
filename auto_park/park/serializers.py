@@ -14,3 +14,18 @@ class VehicleSerializers(serializers.ModelSerializer):
         model = Vehicle
         fields = '__all__'
 
+class VehicleSetDriverSerializers(serializers.ModelSerializer):
+
+#    id = serializers.Field(read_only=True)
+    driver = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
+#    make = serializers.CharField(read_only=True)
+#    model = serializers.CharField(read_only=True)
+#    plate_number = serializers.CharField(read_only=True)
+#    created_at = serializers.DateTimeField(read_only=True)
+#    updated_at = serializers.DateTimeField(read_only=True)
+
+    class Meta:
+        model = Vehicle
+        fields = ['driver']
+
+
