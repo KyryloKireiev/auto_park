@@ -1,15 +1,11 @@
-from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView, CreateAPIView
-from rest_framework.filters import SearchFilter
+from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView, RetrieveUpdateAPIView
+
 import logging
 
 from .models import Driver, Vehicle
 from .serializers import DriverSerializer, VehicleSerializers, VehicleSetDriverSerializers
 
 from datetime import datetime, timezone
-from .forms import DriverFilterForm
-from rest_framework.request import Request
-from rest_framework.response import Response
-from typing import Any
 from django.db.models import QuerySet
 from django.conf import settings
 
@@ -17,27 +13,18 @@ class DriverListAPIView(ListCreateAPIView):
     serializer_class = DriverSerializer
     queryset = Driver.objects.all()
 
-    def get(self, request: Request, *args: Any, **kwargs: Any) -> Response:
-        form = DriverFilterForm(request.GET)
-        if not form.is_valid():
-            return Response(data=form.errors, status=400)
-        return super().get(request, *args, **kwargs)
-
     def get_queryset(self) -> QuerySet:
         queryset = Driver.objects
-        filter_fields = ["created_at__lte", "created_at__gte"]
-        filter_kwargs = {}
 
-        for field in filter_fields:
-            if field in self.request.GET:
-                datetime_ = datetime.strptime(self.request.GET[field], settings.DATE_INPUT_FORMAT)
-                datetime_ = datetime_.replace(tzinfo=timezone.utc)
-                filter_kwargs[field] = datetime_
+        if "created_at__lte" in self.request.GET:
+            created_at__lte = datetime.strptime(self.request.GET.get("created_at__lte"),
+                                                settings.DATE_INPUT_FORMAT).replace(tzinfo=timezone.utc)
+            queryset = queryset.filter(created_at__lte=created_at__lte)
 
-        logging.warning(filter_kwargs)
-
-        if filter_kwargs:
-            queryset = queryset.filter(**filter_kwargs)
+        if "created_at__gte" in self.request.GET:
+            created_at__gte = datetime.strptime(self.request.GET.get("created_at__gte"),
+                                                settings.DATE_INPUT_FORMAT).replace(tzinfo=timezone.utc)
+            queryset = queryset.filter(created_at__gte=created_at__gte)
 
         return queryset
 
@@ -53,7 +40,7 @@ class VehicleListAPIView(ListCreateAPIView):
     queryset = Vehicle.objects.all()
 
 
-    def get_queryset(self):
+    def get_queryset(self) -> QuerySet:
         queryset = Vehicle.objects.all()
         with_drivers = self.request.query_params.get('with_drivers')
 
@@ -70,7 +57,7 @@ class VehicleDetailCRUDAPIView(RetrieveUpdateDestroyAPIView):
     lookup_field = 'id'
 
 
-class VehicleCreateDestroyDriverAPIView(CreateAPIView):
+class VehicleCreateDestroyDriverAPIView(RetrieveUpdateAPIView):
     serializer_class = VehicleSetDriverSerializers
     queryset = Vehicle.objects.all()
     lookup_field = 'id'
