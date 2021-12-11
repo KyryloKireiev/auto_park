@@ -1,6 +1,5 @@
 from django.db import models
 
-#Создаем модель водителя и все ее поля
 class Driver(models.Model):
 
     id = models.BigAutoField(primary_key=True)
@@ -16,11 +15,10 @@ class Driver(models.Model):
         verbose_name = 'Водитель'
         verbose_name_plural = 'Водители'
 
-#Создаем модель авто и все ее поля
 class Vehicle(models.Model):
 
     id = models.BigAutoField(primary_key=True)
-    driver = models.ForeignKey(Driver, on_delete=models.SET_NULL, blank=True, null=True)
+    driver = models.OneToOneField(Driver, on_delete=models.SET_NULL, blank=True, null=True)
     make = models.CharField('Модель автомобиля:', max_length=50)
     model = models.CharField('Марка автомобиля:', max_length=50)
     plate_number = models.CharField('Номер автомобиля:', max_length=50)

@@ -18,6 +18,7 @@ vendor/*
 venv/
 auto_park/auto_park/__pycache__/*
 auto_park/park/__pycache__/*
+auto_park/park/migrations/__pycache__/*
 
 /bin/*
 
