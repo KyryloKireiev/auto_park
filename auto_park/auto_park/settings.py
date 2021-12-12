@@ -105,7 +105,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
 
-LANGUAGE_CODE = 'ru-Ru'
+LANGUAGE_CODE = 'en-US'
 
 TIME_ZONE = 'UTC'
 
@@ -128,7 +128,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 REST_FRAMEWORK = {
     "DATETIME_FORMAT": "%d/%m/%Y %H:%M:%S",
-    "DATE_FORMAT": "%d/%m/%Y"
+    "DATE_FORMAT": "%d/%m/%Y",
 }
 
 DATE_INPUT_FORMAT = "%d-%m-%Y"
+
+

@@ -1,25 +1,5 @@
-# Binaries
-*.exe
-*.dll
-*.so
-*.dylib
-*.zip
-
-# Output of the go coverage tool and logs
-*.out
-*.xml
-*.log
-
-# Automatically generated
-vendor/*
-
-# Local specifics
 .idea/
 venv/
-auto_park/auto_park/__pycache__/*
-auto_park/park/__pycache__/*
-auto_park/park/migrations/__pycache__/*
+__pycache__/
 
-/bin/*
-
-config.json
+auto_park/db.sqlite3
