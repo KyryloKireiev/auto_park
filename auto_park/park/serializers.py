@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from .models import Driver, Vehicle
 
+
 class DriverSerializer(serializers.ModelSerializer):
 
     class Meta:

@@ -2,7 +2,7 @@
 
 Autopark REST API allows you to create and edit a car and driver models. 
 All data is transmitted in json format. The app is written in Python using 
-Django and Django Rest Framework
+Django and Django Rest Framework.
 
 ## Features
 
@@ -23,7 +23,7 @@ Django and Django Rest Framework
 Driver:
 + GET /drivers/driver/ - get drivers list
 + GET /drivers/driver/?created_at__gte=10-11-2021 - get drivers list created after 10-11-2021
-+ GET /drivers/driver/?created_at__lte=16-11-2021 - get drivers list created before до 16-11-2021
++ GET /drivers/driver/?created_at__lte=16-11-2021 - get drivers list created before 16-11-2021
 
 + GET /drivers/driver/<driver_id>/ - get driver info
 + POST /drivers/driver/ - create new driver
