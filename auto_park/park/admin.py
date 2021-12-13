@@ -3,5 +3,3 @@ from .models import Driver, Vehicle
 
 admin.site.register(Driver)
 admin.site.register(Vehicle)
-
-

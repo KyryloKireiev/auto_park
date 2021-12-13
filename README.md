@@ -6,17 +6,14 @@ Django and Django Rest Framework.
 
 ## Features
 
-| Feature                      | Supported                |
-|:-----------------------------|:-------------------------|
-| CRUD for Driver model        | :white_check_mark:       |
-| Get driver detail info       | :white_check_mark:       |
-| CRUD for Vehicle model       | :white_check_mark:       |
-| Get vehicle detail info      | :white_check_mark:       |
-| Date filter for drivers      | :white_check_mark:       |
-| Get/Get out driver from a car| :white_check_mark:       |
-| Tested Python version        | 3.9                      |
-| Tested Django version        | 3.2.9                    |
-| Tested DRF version           | 3.12.4                   |
+| Feature                        | Supported                |
+|:-------------------------------|:-------------------------|
+| REST API for auto park         | :white_check_mark:       |
+| CRUD for drivers and vehicles  | :white_check_mark:       |
+| Endpoints for filtering drivers and vehicles | :white_check_mark:|                          
+| Tested Python version          | 3.9                      |
+| Tested Django version          | 3.2.9                    |
+| Tested DRF version             | 3.12.4                   |
 
 ## The app supports operations
 
@@ -27,7 +24,7 @@ Driver:
 
 + GET /drivers/driver/<driver_id>/ - get driver info
 + POST /drivers/driver/ - create new driver
-+ UPDATE /drivers/driver/<driver_id>/ - update driver
++ PATCH /drivers/driver/<driver_id>/ - update driver
 + DELETE /drivers/driver/<driver_id>/ - delete driver
 
 Vehicle:
@@ -36,9 +33,9 @@ Vehicle:
 + GET /vehicles/vehicle/?with_drivers=no - get vehicles list without drivers
 
 + GET /vehicles/vehicle/<vehicle_id> - get vehicle info
-+ POST /vehicles/vehicle/ - create new car
-+ UPDATE /vehicles/vehicle/<vehicle_id>/ - update car
-+ POST /vehicles/set_driver/<vehicle_id>/ - get/get out driver from a car  
-+ DELETE /vehicles/vehicle/<vehicle_id>/ - delete car
++ POST /vehicles/vehicle/ - create new vehicle
++ PATCH /vehicles/vehicle/<vehicle_id>/ - update vehicle
++ POST /vehicles/set_driver/<vehicle_id>/ - get/get out driver from a vehicle  
++ DELETE /vehicles/vehicle/<vehicle_id>/ - delete vehicle
 
 
