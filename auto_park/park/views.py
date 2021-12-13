@@ -1,17 +1,14 @@
+import json
+from datetime import datetime, timezone
+from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
+from django.db.models import QuerySet
 from rest_framework.exceptions import ValidationError
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.response import Response
 from rest_framework.views import APIView
-import json
-
-import logging
-
 from .models import Driver, Vehicle
 from .serializers import DriverSerializer, VehicleSerializer
-from datetime import datetime, timezone
-from django.db.models import QuerySet
-from django.conf import settings
 
 
 class DriverListAPIView(ListCreateAPIView):
@@ -22,13 +19,15 @@ class DriverListAPIView(ListCreateAPIView):
         queryset = Driver.objects
 
         if "created_at__lte" in self.request.GET:
-            created_at__lte = datetime.strptime(self.request.GET.get("created_at__lte"),
-                                                settings.DATE_INPUT_FORMAT).replace(tzinfo=timezone.utc)
+            created_at__lte = datetime.strptime(
+                self.request.GET.get("created_at__lte"), settings.DATE_INPUT_FORMAT
+            ).replace(tzinfo=timezone.utc)
             queryset = queryset.filter(created_at__lte=created_at__lte)
 
         if "created_at__gte" in self.request.GET:
-            created_at__gte = datetime.strptime(self.request.GET.get("created_at__gte"),
-                                                settings.DATE_INPUT_FORMAT).replace(tzinfo=timezone.utc)
+            created_at__gte = datetime.strptime(
+                self.request.GET.get("created_at__gte"), settings.DATE_INPUT_FORMAT
+            ).replace(tzinfo=timezone.utc)
             queryset = queryset.filter(created_at__gte=created_at__gte)
 
         return queryset
@@ -37,7 +36,7 @@ class DriverListAPIView(ListCreateAPIView):
 class DriverDetailCRUDAPIView(RetrieveUpdateDestroyAPIView):
     serializer_class = DriverSerializer
     queryset = Driver.objects.all()
-    lookup_field = 'id'
+    lookup_field = "id"
 
 
 class VehicleListAPIView(ListCreateAPIView):
@@ -46,14 +45,14 @@ class VehicleListAPIView(ListCreateAPIView):
 
     def get_queryset(self) -> QuerySet:
         queryset = Vehicle.objects.all()
-        with_drivers = self.request.query_params.get('with_drivers')
+        with_drivers = self.request.query_params.get("with_drivers")
 
         if with_drivers is not None and with_drivers not in {"yes", "no"}:
             raise ValidationError("Invalid value for parameter with_drivers")
 
-        if with_drivers == 'yes':
+        if with_drivers == "yes":
             queryset = queryset.filter(driver__isnull=False)
-        if with_drivers == 'no':
+        if with_drivers == "no":
             queryset = queryset.filter(driver__isnull=True)
 
         return queryset
@@ -62,15 +61,17 @@ class VehicleListAPIView(ListCreateAPIView):
 class VehicleDetailCRUDAPIView(RetrieveUpdateDestroyAPIView):
     serializer_class = VehicleSerializer
     queryset = Vehicle.objects.all()
-    lookup_field = 'id'
+    lookup_field = "id"
 
 
 class SetVehicleDriverView(APIView):
     def post(self, request, vehicle_id):
-        body_string = request.body.decode('utf-8')
+        # body_string = request.body.decode('utf-8')
+        # body = json.loads(body_string)
+        # driver_id = body["driver_id"]
+        body_string = request.body.read().decode("utf-8")
         body = json.loads(body_string)
         driver_id = body["driver_id"]
-
         try:
             driver = Driver.objects.get(pk=driver_id)
             vehicle = Vehicle.objects.get(pk=vehicle_id)
