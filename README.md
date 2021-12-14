@@ -38,4 +38,4 @@ Vehicle:
 + POST /vehicles/set_driver/<vehicle_id>/ - get/get out driver from a vehicle  
 + DELETE /vehicles/vehicle/<vehicle_id>/ - delete vehicle
 
-
+Tools used during development: black, flake8
