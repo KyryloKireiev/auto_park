@@ -28,3 +28,10 @@ To use endpoit "POST /vehicles/set_driver/<vehicle_id>/" you need:
 + make post request with driver_id in json format
 + example: {"driver_id": 1} to set driver 1 in "/<vehicle_id>/"
 + again {"driver_id": 1} to remove driver 1 from "/<vehicle_id>/"
+
+If you want to include Django Rest Framework forms:
++ remove from settings.py "REST_FRAMEWORK = {
+    'DEFAULT_RENDERER_CLASSES': (
+        'rest_framework.renderers.JSONRenderer',
+    )
+}"
