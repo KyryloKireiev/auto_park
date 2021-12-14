@@ -1,10 +1,10 @@
-import json
 from datetime import datetime, timezone
 from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import QuerySet
 from rest_framework.exceptions import ValidationError
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
+from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from .models import Driver, Vehicle
@@ -65,13 +65,8 @@ class VehicleDetailCRUDAPIView(RetrieveUpdateDestroyAPIView):
 
 
 class SetVehicleDriverView(APIView):
-    def post(self, request, vehicle_id):
-        # body_string = request.body.decode('utf-8')
-        # body = json.loads(body_string)
-        # driver_id = body["driver_id"]
-        body_string = request.body.read().decode("utf-8")
-        body = json.loads(body_string)
-        driver_id = body["driver_id"]
+    def post(self, request: Request, vehicle_id: int):
+        driver_id = request.data["driver_id"]
         try:
             driver = Driver.objects.get(pk=driver_id)
             vehicle = Vehicle.objects.get(pk=vehicle_id)

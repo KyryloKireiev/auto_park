@@ -4,7 +4,7 @@ from django.db import models
 class Driver(models.Model):
     id = models.BigAutoField(primary_key=True)
     first_name = models.CharField("First name:", max_length=50)
-    last_name = models.CharField("Last Name:", max_length=50)
+    last_name = models.CharField("Last name:", max_length=50)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -31,5 +31,5 @@ class Vehicle(models.Model):
         return self.plate_number
 
     class Meta:
-        verbose_name = "Car"
-        verbose_name_plural = "Cars"
+        verbose_name = "Vehicle"
+        verbose_name_plural = "Vehicles"
